@@ -1,0 +1,6 @@
+@Elek.Presentation.Api_HostAddress = http://localhost:5139
+
+GET {{Elek.Presentation.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
