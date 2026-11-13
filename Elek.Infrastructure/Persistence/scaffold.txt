@@ -1,0 +1,4 @@
+﻿--===========SCAFFOLD_TABLA_RFC========================
+cd Elek.Infrastructure/Persistence
+
+Scaffold-DbContext "Server=.;Database=Elektra;Trusted_Connection=True;TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Persistence/Entities -ContextDir Persistence/Data -Context AppDbContext -DataAnnotations -Force
