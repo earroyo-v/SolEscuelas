@@ -25,16 +25,20 @@ namespace Elek.Infrastructure.Implementation
         {
             try
             {
-                EscuelaSP escuela = await _context.EscuelasSP.FromSqlInterpolated($@"
+                var escuelas = await _context.EscuelasSP
+                .FromSqlInterpolated($@"
                     EXECUTE dbo.sp_Escuelas_CRUD
-                    @Accion = {"INSERT"}
-                    @Nombre = {user.Nombre}
-                    @Descripcion = {user.Descripcion}
+                    @Accion = {"INSERT"},
+                    @Nombre = {user.Nombre},
+                    @Descripcion = {user.Descripcion},
                     @UUID = {user.UUID}
-                    ")
-                    .AsNoTracking()
-                    .ElementAtAsync(0);
-                return escuela.ToDTO();
+                ")
+                .AsNoTracking()
+                .ToListAsync();
+
+                var escuela = escuelas.FirstOrDefault();
+
+                return escuela?.ToDTO() ?? new EscuelaDTO();
             }
             catch (Exception ex)
             {

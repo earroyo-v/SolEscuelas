@@ -1,5 +1,6 @@
 ﻿using Elek.Application.Services.Escuelas;
 using Elek.Application.Services.Escuelas.DTO;
+using Elek.Presentation.Api.Contracts.Escuelas;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -39,11 +40,11 @@ namespace Elek.Presentation.Api.Controllers
 
         // POST api/<EscuelasController>
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] string nombre, string descripcion)
+        public async Task<IActionResult> Post([FromBody] EscuelaRequest escuelaRequest)
         {
             try
             {
-                var escuelaDTO = new EscuelaDTO { Nombre = nombre, Descripcion = descripcion };
+                var escuelaDTO = escuelaRequest;
                 return Created("", await _escuelaService.CrearEscuela(escuelaDTO));
             }
             catch (Exception ex)
