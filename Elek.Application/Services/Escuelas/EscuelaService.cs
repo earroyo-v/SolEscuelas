@@ -1,4 +1,6 @@
 ﻿using Elek.Application.Services.Escuelas.DTO;
+using Elek.Application.Services.Escuelas.Mappers;
+using Elek.Domain.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,9 +21,19 @@ namespace Elek.Application.Services.Escuelas
             throw new NotImplementedException();
         }
 
-        public Task CrearEscuela(EscuelaDTO escuelaDTO)
+        public async Task<EscuelaDTO> CrearEscuela(EscuelaDTO escuelaDTO)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var escuela_domain = Escuela.Create(escuelaDTO.Nombre, escuelaDTO.Descripcion);
+                var escuela = await _escuelaRepository.Create(escuela_domain);
+                return escuela;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (you can use a logging framework here)
+                throw new ApplicationException("An error occurred while retrieving schools.", ex);
+            }
         }
 
         public Task EliminaEscuela(Guid UUID)

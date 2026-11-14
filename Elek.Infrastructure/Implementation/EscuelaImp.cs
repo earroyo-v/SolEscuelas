@@ -4,6 +4,7 @@ using Elek.Application.Services.Escuelas.DTO;
 using Elek.Domain.Domain;
 using Elek.Infrastructure.Mappers;
 using Elek.Infrastructure.Persistence.Data;
+using Elek.Infrastructure.Persistence.StoredProcedures.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -20,9 +21,26 @@ namespace Elek.Infrastructure.Implementation
         {
             _context = context;
         }
-        public Task Create(Escuela user)
+        public async Task<EscuelaDTO> Create(Escuela user)
         {
-            throw new NotImplementedException();
+            try
+            {
+                EscuelaSP escuela = await _context.EscuelasSP.FromSqlInterpolated($@"
+                    EXECUTE dbo.sp_Escuelas_CRUD
+                    @Accion = {"INSERT"}
+                    @Nombre = {user.Nombre}
+                    @Descripcion = {user.Descripcion}
+                    @UUID = {user.UUID}
+                    ")
+                    .AsNoTracking()
+                    .ElementAtAsync(0);
+                return escuela.ToDTO();
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception (e.g., log it)
+                throw new Exception("An error occurred while creating school.", ex);
+            }
         }
 
         public Task Delete(Guid UUID)

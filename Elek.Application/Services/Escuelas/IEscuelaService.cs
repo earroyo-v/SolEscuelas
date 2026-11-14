@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Elek.Application.Services.Escuelas.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,10 +9,10 @@ namespace Elek.Application.Services.Escuelas
 {
     public interface IEscuelaService
     {
-        public Task CrearEscuela(DTO.EscuelaDTO escuelaDTO);
-        public Task<DTO.EscuelaDTO> ObtenEscuela(Guid UUID);
-        public Task<List<DTO.EscuelaDTO>> ObtenEscuelas();
-        public Task ActualizaEscuela(DTO.EscuelaDTO escuelaDTO);
+        public Task<EscuelaDTO> CrearEscuela(EscuelaDTO escuelaDTO);
+        public Task<EscuelaDTO> ObtenEscuela(Guid UUID);
+        public Task<List<EscuelaDTO>> ObtenEscuelas();
+        public Task ActualizaEscuela(EscuelaDTO escuelaDTO);
         public Task EliminaEscuela(Guid UUID);
     }
 }

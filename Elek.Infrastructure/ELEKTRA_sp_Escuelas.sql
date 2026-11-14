@@ -14,9 +14,9 @@ BEGIN
 		BEGIN			
 			THROW 50001, 'El Nombre no puede estar vacio', 1;
 		END
-		INSERT INTO Escuelas (Nombre,Descripcion) 
+		INSERT INTO Escuelas (Nombre,Descripcion,UUID) 
 		OUTPUT INSERTED.*
-		VALUES (@Nombre,@Descripcion)
+		VALUES (@Nombre,@Descripcion,@UUID)
 	END
 
 	ELSE IF @Accion = 'GET_ALL'

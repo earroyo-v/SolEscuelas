@@ -39,8 +39,18 @@ namespace Elek.Presentation.Api.Controllers
 
         // POST api/<EscuelasController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Post([FromBody] string nombre, string descripcion)
         {
+            try
+            {
+                var escuelaDTO = new EscuelaDTO { Nombre = nombre, Descripcion = descripcion };
+                return Created("", await _escuelaService.CrearEscuela(escuelaDTO));
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (you can use a logging framework here)
+                return StatusCode(500, "An error occurred while retrieving schools.");
+            }
         }
 
         // PUT api/<EscuelasController>/5

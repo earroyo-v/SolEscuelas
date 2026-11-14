@@ -10,7 +10,7 @@ namespace Elek.Application.Repositories
 {
     public interface IEscuelaRepository
     {
-        public Task Create(Escuela user);
+        public Task<EscuelaDTO> Create(Escuela user);
         public Task<EscuelaDTO> Read(Guid UUID);
         public Task<List<EscuelaDTO>> ReadAll();
         public Task Update(Escuela user);
