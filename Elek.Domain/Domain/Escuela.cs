@@ -33,18 +33,46 @@ namespace Elek.Domain.Domain
         public static Escuela Create(string nombre, string descripcion)
         {
             if (string.IsNullOrWhiteSpace(nombre))
-                throw new ArgumentException("El nombre no puede estar vacío.");
+                throw new InvalidOperationException("El nombre no puede estar vacío.");
 
             return new Escuela(nombre, descripcion);
         }
-        public void Actualizar(string nombre, string descripcion)
+        public void Actualizar(string newNombre, string newDescripcion)
         {
-            if (string.IsNullOrWhiteSpace(nombre))
+            if (string.IsNullOrWhiteSpace(newNombre))
             {
-                throw new ArgumentException("El nombre de la escuela no puede estar vacío.");
+                throw new InvalidOperationException("El nombre de la escuela no puede estar vacío.");
             }
-            Nombre = nombre;
-            Descripcion = descripcion;
+            if (newNombre == Nombre && newDescripcion == Descripcion)
+            {
+                throw new InvalidOperationException("No se realizaron cambios en la escuela.");
+            }
+            Nombre = newNombre;
+            Descripcion = newDescripcion;
+        }
+        public void ActualizarNombre(string newNombre)
+        {
+            if (string.IsNullOrWhiteSpace(newNombre))
+            {
+                throw new InvalidOperationException("El nombre de la escuela no puede estar vacío.");
+            }
+            if (newNombre == Nombre)
+            {
+                throw new InvalidOperationException("No se realizaron cambios en la escuela.");
+            }
+            Nombre = newNombre;
+        }
+        public void ActualizarDescripcion(string newDescripcion)
+        {
+            if (string.IsNullOrWhiteSpace(newDescripcion))
+            {
+                throw new InvalidOperationException("La descripción de la escuela no puede estar vacía.");
+            }
+            if (newDescripcion == Descripcion)
+            {
+                throw new InvalidOperationException("No se realizaron cambios en la escuela.");
+            }
+            Descripcion = newDescripcion;
         }
     }
 }

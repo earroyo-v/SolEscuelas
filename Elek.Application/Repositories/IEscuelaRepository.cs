@@ -13,7 +13,9 @@ namespace Elek.Application.Repositories
         public Task<EscuelaDTO> Create(Escuela user);
         public Task<EscuelaDTO> Read(Guid UUID);
         public Task<List<EscuelaDTO>> ReadAll();
-        public Task Update(Escuela user);
+        public Task<EscuelaDTO> Update(Escuela user);
+        public Task<EscuelaDTO> UpdateName(Escuela user);
+        public Task<EscuelaDTO> UpdateDescription(Escuela user);
         public Task Delete(Guid UUID);
     }
 }

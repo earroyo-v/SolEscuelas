@@ -48,7 +48,9 @@ BEGIN
 		BEGIN			
 			THROW 50001, 'El Nombre no puede estar vacio', 2;
 		END
-		UPDATE Escuelas SET Nombre = @Nombre, Descripcion = @Descripcion WHERE UUID = @UUID
+		UPDATE Escuelas SET Nombre = @Nombre, Descripcion = @Descripcion 
+		OUTPUT INSERTED.*
+		WHERE UUID = @UUID
 	END
 
 	ELSE IF @Accion = 'UPDATE_NAME'
@@ -62,7 +64,9 @@ BEGIN
 		BEGIN			
 			THROW 50001, 'El Nombre no puede estar vacio', 2;
 		END
-		UPDATE Escuelas SET Nombre = @Nombre WHERE UUID = @UUID
+		UPDATE Escuelas SET Nombre = @Nombre 
+		OUTPUT INSERTED.*
+		WHERE UUID = @UUID
 	END
 
 	ELSE IF @Accion = 'UPDATE_DESC'
@@ -71,7 +75,9 @@ BEGIN
 		BEGIN
 			THROW 50002, 'No existe la Escuela requerida', 1;			
 		END
-		UPDATE Escuelas SET Descripcion = @Descripcion WHERE UUID = @UUID
+		UPDATE Escuelas SET Descripcion = @Descripcion 
+		OUTPUT INSERTED.*
+		WHERE UUID = @UUID
 	END
 
 	ELSE IF @Accion = 'DELETE'

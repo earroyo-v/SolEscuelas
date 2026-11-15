@@ -32,10 +32,18 @@ namespace Elek.Presentation.Api.Controllers
         }
 
         // GET api/<EscuelasController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("{uuid}")]
+        public async Task<IActionResult> Get(Guid uuid)
         {
-            return "value";
+            try
+            {
+                return Ok(await _escuelaService.ObtenEscuela(uuid));
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (you can use a logging framework here)
+                return StatusCode(500, "An error occurred while retrieving schools.");
+            }
         }
 
         // POST api/<EscuelasController>
@@ -44,8 +52,22 @@ namespace Elek.Presentation.Api.Controllers
         {
             try
             {
-                var escuelaDTO = escuelaRequest;
+                EscuelaDTO escuelaDTO = escuelaRequest;
                 return Created("", await _escuelaService.CrearEscuela(escuelaDTO));
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new
+                {
+                    ex.Message
+                });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new
+                {
+                    ex.Message
+                });
             }
             catch (Exception ex)
             {
@@ -55,9 +77,125 @@ namespace Elek.Presentation.Api.Controllers
         }
 
         // PUT api/<EscuelasController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("{uuid}")]
+        public async Task<IActionResult> Put(Guid uuid, [FromBody] EscuelaRequest escuelaRequest)
         {
+            try
+            {
+                if (uuid == Guid.Empty)
+                {
+                    return BadRequest("Invalid UUID provided.");
+                }
+                if (escuelaRequest == null)
+                {
+                    return BadRequest("Escuela data is required.");
+                }
+                EscuelaDTO escuelaDTO = escuelaRequest;
+                escuelaDTO.UUID = uuid; // Ensure the UUID is set from the route parameter
+                return Ok(await _escuelaService.ActualizaEscuela(escuelaDTO));
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new
+                {
+                    ex.Message
+                });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new
+                {
+                    ex.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (you can use a logging framework here)
+                return StatusCode(500, "An error occurred while updating the school.");
+            }
+        }
+
+        // PATCH api/<EscuelasController>/5
+        [HttpPatch("name/{uuid}")]
+        public async Task<IActionResult> PatchName(Guid uuid, [FromBody] string nombre)
+        {
+            try
+            {
+                if (uuid == Guid.Empty)
+                {
+                    return BadRequest("Invalid UUID provided.");
+                }
+                if (nombre == null)
+                {
+                    return BadRequest("nombre is required.");
+                }
+                EscuelaDTO escuelaDTO = new EscuelaDTO
+                {
+                    Nombre = nombre,
+                    UUID = uuid
+                };
+                return Ok(await _escuelaService.ActualizaNombreEscuela(escuelaDTO));
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new
+                {
+                    ex.Message
+                });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new
+                {
+                    ex.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (you can use a logging framework here)
+                return StatusCode(500, "An error occurred while updating the school.");
+            }
+        }
+        // PATCH api/<EscuelasController>/5
+        [HttpPatch("description/{uuid}")]
+        public async Task<IActionResult> PatchDescription(Guid uuid, [FromBody] string description)
+        {
+            try
+            {
+                if (uuid == Guid.Empty)
+                {
+                    return BadRequest("Invalid UUID provided.");
+                }
+                if (description == null)
+                {
+                    return BadRequest("description is required.");
+                }
+                EscuelaDTO escuelaDTO = new EscuelaDTO
+                {
+                    Descripcion = description,
+                    UUID = uuid
+                };
+                return Ok(await _escuelaService.ActualizaDescripcionEscuela(escuelaDTO));
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new
+                {
+                    ex.Message
+                });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new
+                {
+                    ex.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (you can use a logging framework here)
+                return StatusCode(500, "An error occurred while updating the school.");
+            }
         }
 
         // DELETE api/<EscuelasController>/5

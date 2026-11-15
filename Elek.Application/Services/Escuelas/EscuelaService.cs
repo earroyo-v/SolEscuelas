@@ -16,24 +16,36 @@ namespace Elek.Application.Services.Escuelas
         {
             _escuelaRepository = escuelaRepository;
         }
-        public Task ActualizaEscuela(EscuelaDTO escuelaDTO)
+        public async Task<EscuelaDTO> ActualizaEscuela(EscuelaDTO escuelaDTO)
         {
-            throw new NotImplementedException();
+            var existingEscuela = await _escuelaRepository.Read(escuelaDTO.UUID);
+            var escuela_domain = new Escuela(existingEscuela.Id, existingEscuela.Nombre, existingEscuela.Descripcion, existingEscuela.UUID);
+            escuela_domain.Actualizar(escuelaDTO.Nombre, escuelaDTO.Descripcion);
+            var escuela = await _escuelaRepository.Update(escuela_domain);
+            return escuela;
+        }
+        public async Task<EscuelaDTO> ActualizaNombreEscuela(EscuelaDTO escuelaDTO)
+        {
+            var existingEscuela = await _escuelaRepository.Read(escuelaDTO.UUID);
+            var escuela_domain = new Escuela(existingEscuela.Id, existingEscuela.Nombre, existingEscuela.Descripcion, existingEscuela.UUID);
+            escuela_domain.ActualizarNombre(escuelaDTO.Nombre);
+            var escuela = await _escuelaRepository.UpdateName(escuela_domain);
+            return escuela;
+        }
+        public async Task<EscuelaDTO> ActualizaDescripcionEscuela(EscuelaDTO escuelaDTO)
+        {
+            var existingEscuela = await _escuelaRepository.Read(escuelaDTO.UUID);
+            var escuela_domain = new Escuela(existingEscuela.Id, existingEscuela.Nombre, existingEscuela.Descripcion, existingEscuela.UUID);
+            escuela_domain.ActualizarDescripcion(escuelaDTO.Descripcion);
+            var escuela = await _escuelaRepository.UpdateDescription(escuela_domain);
+            return escuela;
         }
 
         public async Task<EscuelaDTO> CrearEscuela(EscuelaDTO escuelaDTO)
         {
-            try
-            {
-                var escuela_domain = Escuela.Create(escuelaDTO.Nombre, escuelaDTO.Descripcion);
-                var escuela = await _escuelaRepository.Create(escuela_domain);
-                return escuela;
-            }
-            catch (Exception ex)
-            {
-                // Log the exception (you can use a logging framework here)
-                throw new ApplicationException("An error occurred while retrieving schools.", ex);
-            }
+            var escuela_domain = Escuela.Create(escuelaDTO.Nombre, escuelaDTO.Descripcion);
+            var escuela = await _escuelaRepository.Create(escuela_domain);
+            return escuela;
         }
 
         public Task EliminaEscuela(Guid UUID)
@@ -43,21 +55,14 @@ namespace Elek.Application.Services.Escuelas
 
         public async Task<EscuelaDTO> ObtenEscuela(Guid UUID)
         {
-            throw new NotImplementedException();
+            var escuela = await _escuelaRepository.Read(UUID);
+            return escuela;
         }
 
         public async Task<List<EscuelaDTO>> ObtenEscuelas()
         {
-            try
-            {
-                var escuelas = await _escuelaRepository.ReadAll();
-                return escuelas;
-            }
-            catch (Exception ex)
-            {
-                // Log the exception (you can use a logging framework here)
-                throw new ApplicationException("An error occurred while retrieving schools.", ex);
-            }
+            var escuelas = await _escuelaRepository.ReadAll();
+            return escuelas;
         }
     }
 }

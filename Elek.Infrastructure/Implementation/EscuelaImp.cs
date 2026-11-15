@@ -52,9 +52,28 @@ namespace Elek.Infrastructure.Implementation
             throw new NotImplementedException();
         }
 
-        public Task<EscuelaDTO> Read(Guid UUID)
+        public async Task<EscuelaDTO> Read(Guid UUID)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var escuelas = await _context.EscuelasSP
+                .FromSqlInterpolated($@"
+                    EXECUTE dbo.sp_Escuelas_CRUD
+                    @Accion = {"GET_UUID"},
+                    @UUID = {UUID}
+                ")
+                .AsNoTracking()
+                .ToListAsync();
+
+                var escuela = escuelas.FirstOrDefault();
+
+                return escuela?.ToDTO() ?? new EscuelaDTO();
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception (e.g., log it)
+                throw new Exception("An error occurred while reading all schools.", ex);
+            }
         }
 
         public async Task<List<EscuelaDTO>> ReadAll()
@@ -76,9 +95,78 @@ namespace Elek.Infrastructure.Implementation
             }
         }
 
-        public Task Update(Escuela user)
+        public async Task<EscuelaDTO> Update(Escuela user)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var escuelas = await _context.EscuelasSP
+                .FromSqlInterpolated($@"
+                    EXECUTE dbo.sp_Escuelas_CRUD
+                    @Accion = {"UPDATE"},
+                    @Nombre = {user.Nombre},
+                    @Descripcion = {user.Descripcion},
+                    @UUID = {user.UUID}
+                ")
+                .AsNoTracking()
+                .ToListAsync();
+
+                var escuela = escuelas.FirstOrDefault();
+
+                return escuela?.ToDTO() ?? new EscuelaDTO();
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception (e.g., log it)
+                throw new Exception("An error occurred while creating school.", ex);
+            }
+        }
+        public async Task<EscuelaDTO> UpdateName(Escuela user)
+        {
+            try
+            {
+                var escuelas = await _context.EscuelasSP
+                .FromSqlInterpolated($@"
+                    EXECUTE dbo.sp_Escuelas_CRUD
+                    @Accion = {"UPDATE_NAME"},
+                    @Nombre = {user.Nombre},
+                    @UUID = {user.UUID}
+                ")
+                .AsNoTracking()
+                .ToListAsync();
+
+                var escuela = escuelas.FirstOrDefault();
+
+                return escuela?.ToDTO() ?? new EscuelaDTO();
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception (e.g., log it)
+                throw new Exception("An error occurred while creating school.", ex);
+            }
+        }
+        public async Task<EscuelaDTO> UpdateDescription(Escuela user)
+        {
+            try
+            {
+                var escuelas = await _context.EscuelasSP
+                .FromSqlInterpolated($@"
+                    EXECUTE dbo.sp_Escuelas_CRUD
+                    @Accion = {"UPDATE_DESC"},
+                    @Descripcion = {user.Descripcion},
+                    @UUID = {user.UUID}
+                ")
+                .AsNoTracking()
+                .ToListAsync();
+
+                var escuela = escuelas.FirstOrDefault();
+
+                return escuela?.ToDTO() ?? new EscuelaDTO();
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception (e.g., log it)
+                throw new Exception("An error occurred while creating school.", ex);
+            }
         }
     }
 }
