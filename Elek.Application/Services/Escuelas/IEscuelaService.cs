@@ -15,6 +15,6 @@ namespace Elek.Application.Services.Escuelas
         public Task<EscuelaDTO> ActualizaEscuela(EscuelaDTO escuelaDTO);
         public Task<EscuelaDTO> ActualizaNombreEscuela(EscuelaDTO escuelaDTO);
         public Task<EscuelaDTO> ActualizaDescripcionEscuela(EscuelaDTO escuelaDTO);
-        public Task EliminaEscuela(Guid UUID);
+        public Task<EscuelaDTO> EliminaEscuela(Guid UUID);
     }
 }

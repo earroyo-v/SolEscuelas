@@ -19,6 +19,8 @@ namespace Elek.Application.Services.Escuelas
         public async Task<EscuelaDTO> ActualizaEscuela(EscuelaDTO escuelaDTO)
         {
             var existingEscuela = await _escuelaRepository.Read(escuelaDTO.UUID);
+            if (existingEscuela == null)
+                throw new KeyNotFoundException("La escuela no existe.");
             var escuela_domain = new Escuela(existingEscuela.Id, existingEscuela.Nombre, existingEscuela.Descripcion, existingEscuela.UUID);
             escuela_domain.Actualizar(escuelaDTO.Nombre, escuelaDTO.Descripcion);
             var escuela = await _escuelaRepository.Update(escuela_domain);
@@ -27,6 +29,8 @@ namespace Elek.Application.Services.Escuelas
         public async Task<EscuelaDTO> ActualizaNombreEscuela(EscuelaDTO escuelaDTO)
         {
             var existingEscuela = await _escuelaRepository.Read(escuelaDTO.UUID);
+            if (existingEscuela == null)
+                throw new KeyNotFoundException("La escuela no existe.");
             var escuela_domain = new Escuela(existingEscuela.Id, existingEscuela.Nombre, existingEscuela.Descripcion, existingEscuela.UUID);
             escuela_domain.ActualizarNombre(escuelaDTO.Nombre);
             var escuela = await _escuelaRepository.UpdateName(escuela_domain);
@@ -35,6 +39,8 @@ namespace Elek.Application.Services.Escuelas
         public async Task<EscuelaDTO> ActualizaDescripcionEscuela(EscuelaDTO escuelaDTO)
         {
             var existingEscuela = await _escuelaRepository.Read(escuelaDTO.UUID);
+            if (existingEscuela == null)
+                throw new KeyNotFoundException("La escuela no existe.");
             var escuela_domain = new Escuela(existingEscuela.Id, existingEscuela.Nombre, existingEscuela.Descripcion, existingEscuela.UUID);
             escuela_domain.ActualizarDescripcion(escuelaDTO.Descripcion);
             var escuela = await _escuelaRepository.UpdateDescription(escuela_domain);
@@ -48,14 +54,17 @@ namespace Elek.Application.Services.Escuelas
             return escuela;
         }
 
-        public Task EliminaEscuela(Guid UUID)
+        public async Task<EscuelaDTO> EliminaEscuela(Guid UUID)
         {
-            throw new NotImplementedException();
+            var escuela = await _escuelaRepository.Delete(UUID);
+            return escuela;
         }
 
         public async Task<EscuelaDTO> ObtenEscuela(Guid UUID)
         {
             var escuela = await _escuelaRepository.Read(UUID);
+            if (escuela == null)
+                throw new KeyNotFoundException("La escuela no existe.");
             return escuela;
         }
 

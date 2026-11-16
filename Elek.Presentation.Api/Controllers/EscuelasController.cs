@@ -2,6 +2,7 @@
 using Elek.Application.Services.Escuelas.DTO;
 using Elek.Presentation.Api.Contracts.Escuelas;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -24,7 +25,7 @@ namespace Elek.Presentation.Api.Controllers
             {
                 return Ok(await _escuelaService.ObtenEscuelas());
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Log the exception (you can use a logging framework here)
                 return StatusCode(500, "An error occurred while retrieving schools.");
@@ -39,7 +40,11 @@ namespace Elek.Presentation.Api.Controllers
             {
                 return Ok(await _escuelaService.ObtenEscuela(uuid));
             }
-            catch (Exception ex)
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (Exception)
             {
                 // Log the exception (you can use a logging framework here)
                 return StatusCode(500, "An error occurred while retrieving schools.");
@@ -62,6 +67,10 @@ namespace Elek.Presentation.Api.Controllers
                     ex.Message
                 });
             }
+            catch (SqlException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
             catch (InvalidOperationException ex)
             {
                 return Conflict(new
@@ -69,7 +78,7 @@ namespace Elek.Presentation.Api.Controllers
                     ex.Message
                 });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Log the exception (you can use a logging framework here)
                 return StatusCode(500, "An error occurred while retrieving schools.");
@@ -101,6 +110,14 @@ namespace Elek.Presentation.Api.Controllers
                     ex.Message
                 });
             }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (SqlException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
             catch (InvalidOperationException ex)
             {
                 return Conflict(new
@@ -108,7 +125,7 @@ namespace Elek.Presentation.Api.Controllers
                     ex.Message
                 });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Log the exception (you can use a logging framework here)
                 return StatusCode(500, "An error occurred while updating the school.");
@@ -143,6 +160,14 @@ namespace Elek.Presentation.Api.Controllers
                     ex.Message
                 });
             }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (SqlException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
             catch (InvalidOperationException ex)
             {
                 return Conflict(new
@@ -150,7 +175,7 @@ namespace Elek.Presentation.Api.Controllers
                     ex.Message
                 });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Log the exception (you can use a logging framework here)
                 return StatusCode(500, "An error occurred while updating the school.");
@@ -184,6 +209,14 @@ namespace Elek.Presentation.Api.Controllers
                     ex.Message
                 });
             }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (SqlException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
             catch (InvalidOperationException ex)
             {
                 return Conflict(new
@@ -191,7 +224,7 @@ namespace Elek.Presentation.Api.Controllers
                     ex.Message
                 });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Log the exception (you can use a logging framework here)
                 return StatusCode(500, "An error occurred while updating the school.");
@@ -199,9 +232,37 @@ namespace Elek.Presentation.Api.Controllers
         }
 
         // DELETE api/<EscuelasController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{uuid}")]
+        public async Task<IActionResult> Delete(Guid uuid)
         {
+            try
+            {
+                if (uuid == Guid.Empty)
+                {
+                    return BadRequest("Invalid UUID provided.");
+                }
+                return Ok(await _escuelaService.EliminaEscuela(uuid));
+            }
+            catch (SqlException ex) when (ex.Number == 50003)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (SqlException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new
+                {
+                    ex.Message
+                });
+            }
+            catch (Exception)
+            {
+                // Log the exception (you can use a logging framework here)
+                return StatusCode(500, "An error occurred while deleting the school.");
+            }
         }
     }
 }

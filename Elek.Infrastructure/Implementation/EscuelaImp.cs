@@ -23,150 +23,113 @@ namespace Elek.Infrastructure.Implementation
         }
         public async Task<EscuelaDTO> Create(Escuela user)
         {
-            try
-            {
-                var escuelas = await _context.EscuelasSP
-                .FromSqlInterpolated($@"
+            var escuelas = await _context.EscuelasSP
+            .FromSqlInterpolated($@"
                     EXECUTE dbo.sp_Escuelas_CRUD
                     @Accion = {"INSERT"},
                     @Nombre = {user.Nombre},
                     @Descripcion = {user.Descripcion},
                     @UUID = {user.UUID}
                 ")
-                .AsNoTracking()
-                .ToListAsync();
+            .AsNoTracking()
+            .ToListAsync();
 
-                var escuela = escuelas.FirstOrDefault();
+            var escuela = escuelas.FirstOrDefault();
 
-                return escuela?.ToDTO() ?? new EscuelaDTO();
-            }
-            catch (Exception ex)
-            {
-                // Handle the exception (e.g., log it)
-                throw new Exception("An error occurred while creating school.", ex);
-            }
+            return escuela?.ToDTO()!;
         }
 
-        public Task Delete(Guid UUID)
+        public async Task<EscuelaDTO> Delete(Guid UUID)
         {
-            throw new NotImplementedException();
+            var escuelas = await _context.EscuelasSP
+            .FromSqlInterpolated($@"
+                    EXECUTE dbo.sp_Escuelas_CRUD
+                    @Accion = {"DELETE"},
+                    @UUID = {UUID}
+                ")
+            .AsNoTracking()
+            .ToListAsync();
+
+            var escuela = escuelas.FirstOrDefault();
+
+            return escuela?.ToDTO()!;
         }
 
         public async Task<EscuelaDTO> Read(Guid UUID)
         {
-            try
-            {
-                var escuelas = await _context.EscuelasSP
-                .FromSqlInterpolated($@"
+            var escuelas = await _context.EscuelasSP
+            .FromSqlInterpolated($@"
                     EXECUTE dbo.sp_Escuelas_CRUD
                     @Accion = {"GET_UUID"},
                     @UUID = {UUID}
                 ")
-                .AsNoTracking()
-                .ToListAsync();
+            .AsNoTracking()
+            .ToListAsync();
 
-                var escuela = escuelas.FirstOrDefault();
+            var escuela = escuelas.FirstOrDefault();
 
-                return escuela?.ToDTO() ?? new EscuelaDTO();
-            }
-            catch (Exception ex)
-            {
-                // Handle the exception (e.g., log it)
-                throw new Exception("An error occurred while reading all schools.", ex);
-            }
+            return escuela?.ToDTO()!;
         }
 
         public async Task<List<EscuelaDTO>> ReadAll()
         {
-            try
-            {
-                var escuelas = await _context.EscuelasSP.FromSqlInterpolated($@"
+            var escuelas = await _context.EscuelasSP.FromSqlInterpolated($@"
                     EXECUTE dbo.sp_Escuelas_CRUD
                     @Accion = {"GET_ALL"}
                     ")
-                    .AsNoTracking()
-                    .ToListAsync();
-                return escuelas.Select(e => e.ToDTO()).ToList();
-            }
-            catch (Exception ex)
-            {
-                // Handle the exception (e.g., log it)
-                throw new Exception("An error occurred while reading all schools.", ex);
-            }
+                .AsNoTracking()
+                .ToListAsync();
+            return escuelas.Select(e => e.ToDTO()).ToList();
         }
 
         public async Task<EscuelaDTO> Update(Escuela user)
         {
-            try
-            {
-                var escuelas = await _context.EscuelasSP
-                .FromSqlInterpolated($@"
+            var escuelas = await _context.EscuelasSP
+            .FromSqlInterpolated($@"
                     EXECUTE dbo.sp_Escuelas_CRUD
                     @Accion = {"UPDATE"},
                     @Nombre = {user.Nombre},
                     @Descripcion = {user.Descripcion},
                     @UUID = {user.UUID}
                 ")
-                .AsNoTracking()
-                .ToListAsync();
+            .AsNoTracking()
+            .ToListAsync();
 
-                var escuela = escuelas.FirstOrDefault();
+            var escuela = escuelas.FirstOrDefault();
 
-                return escuela?.ToDTO() ?? new EscuelaDTO();
-            }
-            catch (Exception ex)
-            {
-                // Handle the exception (e.g., log it)
-                throw new Exception("An error occurred while creating school.", ex);
-            }
+            return escuela?.ToDTO()!;
         }
         public async Task<EscuelaDTO> UpdateName(Escuela user)
         {
-            try
-            {
-                var escuelas = await _context.EscuelasSP
-                .FromSqlInterpolated($@"
+            var escuelas = await _context.EscuelasSP
+            .FromSqlInterpolated($@"
                     EXECUTE dbo.sp_Escuelas_CRUD
                     @Accion = {"UPDATE_NAME"},
                     @Nombre = {user.Nombre},
                     @UUID = {user.UUID}
                 ")
-                .AsNoTracking()
-                .ToListAsync();
+            .AsNoTracking()
+            .ToListAsync();
 
-                var escuela = escuelas.FirstOrDefault();
+            var escuela = escuelas.FirstOrDefault();
 
-                return escuela?.ToDTO() ?? new EscuelaDTO();
-            }
-            catch (Exception ex)
-            {
-                // Handle the exception (e.g., log it)
-                throw new Exception("An error occurred while creating school.", ex);
-            }
+            return escuela?.ToDTO()!;
         }
         public async Task<EscuelaDTO> UpdateDescription(Escuela user)
         {
-            try
-            {
-                var escuelas = await _context.EscuelasSP
-                .FromSqlInterpolated($@"
+            var escuelas = await _context.EscuelasSP
+            .FromSqlInterpolated($@"
                     EXECUTE dbo.sp_Escuelas_CRUD
                     @Accion = {"UPDATE_DESC"},
                     @Descripcion = {user.Descripcion},
                     @UUID = {user.UUID}
                 ")
-                .AsNoTracking()
-                .ToListAsync();
+            .AsNoTracking()
+            .ToListAsync();
 
-                var escuela = escuelas.FirstOrDefault();
+            var escuela = escuelas.FirstOrDefault();
 
-                return escuela?.ToDTO() ?? new EscuelaDTO();
-            }
-            catch (Exception ex)
-            {
-                // Handle the exception (e.g., log it)
-                throw new Exception("An error occurred while creating school.", ex);
-            }
+            return escuela?.ToDTO()!;
         }
     }
 }
