@@ -8,5 +8,6 @@ namespace Elek.Infrastructure.Persistence.Data
     public partial class AppDbContext : DbContext
     {
         public virtual DbSet<EscuelaSP> EscuelasSP { get; set; } = null!;
+        public virtual DbSet<ProfesorSP> ProfesoresSP { get; set; } = null!;
     }
 }
