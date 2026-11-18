@@ -49,19 +49,19 @@ namespace Elek.Domain.Domain
             return new Profesor(nombre, apellido, idEscuela);
         }
 
-        public void Update(string nombre, string apellido, int idEscuela)
+        public void Update(string newNombre, string newApellido, int newIdEscuela)
         {
-            if (string.IsNullOrWhiteSpace(nombre))
+            if (string.IsNullOrWhiteSpace(newNombre))
             {
-                throw new ArgumentException("El nombre no puede estar vacío.", nameof(nombre));
+                throw new ArgumentException("El nombre no puede estar vacío.", nameof(newNombre));
             }
-            if (string.IsNullOrWhiteSpace(apellido))
+            if (string.IsNullOrWhiteSpace(newApellido))
             {
-                throw new ArgumentException("El apellido no puede estar vacío.", nameof(apellido));
+                throw new ArgumentException("El apellido no puede estar vacío.", nameof(newApellido));
             }
-            Nombre = nombre;
-            Apellido = apellido;
-            IdEscuela = idEscuela;
+            Nombre = newNombre;
+            Apellido = newApellido;
+            IdEscuela = newIdEscuela;
         }
     }
 }

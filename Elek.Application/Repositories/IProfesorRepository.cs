@@ -1,4 +1,5 @@
 ﻿using Elek.Application.Services.Escuelas.DTO;
+using Elek.Application.Services.Profesores.DTO;
 using Elek.Domain.Domain;
 using System;
 using System.Collections.Generic;

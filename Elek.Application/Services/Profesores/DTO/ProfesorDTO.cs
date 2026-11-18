@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Elek.Application.Services.Escuelas.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,5 +14,6 @@ namespace Elek.Application.Services.Profesores.DTO
         public string Apellido { get; set; } = null!;
         public int IdEscuela { get; set; }
         public Guid Uuid { get; set; }
+        public EscuelaDTO? escuela { get; set; }
     }
 }
