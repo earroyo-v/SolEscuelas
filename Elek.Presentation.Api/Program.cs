@@ -1,4 +1,5 @@
 using Elek.Application.Repositories;
+using Elek.Application.Services.Profesores;
 using Elek.Application.Services.Escuelas;
 using Elek.Infrastructure.Implementation;
 using Elek.Infrastructure.Persistence.Data;
@@ -12,6 +13,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<IEscuelaService, EscuelaService>();
 builder.Services.AddScoped<IEscuelaRepository, EscuelaImp>();
+builder.Services.AddScoped<IProfesorService, ProfesorService>();
+builder.Services.AddScoped<IProfesorRepository, ProfesorImp>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
