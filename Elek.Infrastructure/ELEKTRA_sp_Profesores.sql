@@ -115,7 +115,7 @@ BEGIN
 
 		IF NOT EXISTS (SELECT TOP 1 1 FROM Escuelas WHERE Id = @IdEscuela)
 		BEGIN			
-			THROW 50003, 'La Escuela ingresada no existe', 3;
+			THROW 50003, 'La Escuela ingresada no existe', 2;
 		END
 
 		UPDATE Profesores SET IdEscuela = @IdEscuela 
