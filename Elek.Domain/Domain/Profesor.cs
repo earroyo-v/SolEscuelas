@@ -46,10 +46,6 @@ namespace Elek.Domain.Domain
             {
                 throw new ArgumentException("El apellido no puede estar vacío.", nameof(apellido));
             }
-            if (idEscuela <= 0)
-            {
-                throw new ArgumentException("El id de la escuela debe ser un número positivo.", nameof(idEscuela));
-            }
             return new Profesor(nombre, apellido, idEscuela);
         }
 
@@ -62,10 +58,6 @@ namespace Elek.Domain.Domain
             if (string.IsNullOrWhiteSpace(apellido))
             {
                 throw new ArgumentException("El apellido no puede estar vacío.", nameof(apellido));
-            }
-            if (idEscuela <= 0)
-            {
-                throw new ArgumentException("El id de la escuela debe ser un número positivo.", nameof(idEscuela));
             }
             Nombre = nombre;
             Apellido = apellido;
